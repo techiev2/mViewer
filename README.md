@@ -1,23 +1,56 @@
-## mViewer-v0.9.1 Released !
+
+[![Build](https://travis-ci.org/Imaginea/mViewer.svg?branch=master)](https://travis-ci.org/Imaginea/mViewer/builds)
 
 mViewer(Micro/Mongo Viewer) is a light web-based GUI for managing MongoDB without needing any installation.
+mViewer allows managing databases, collections, gridfs, users & indexes as an alternative to the mongoDB native shell
+in a simpler and user-friendly way.
 
-### Enhanced Feature set of mViewer-v0.9.1 now supports :-
+### Whats new in mViewer-1.0.0?
+   1. Introduced tabs to open and work on individual db's simultaneously.
+   2. Added support to run multiple db queries based on selection.
+
+### Whats new in mViewer-1.0.0 beta?
+   1. Redesigned complete user interface with enhananced ease.
+   2. New login interface which supports mongodb started with/without auth mode.
+   3. Full support of roles and privileges.
+   4. User creation with roles with specific set actions.
+   5. Supports latest MongoDB v3.x
+   6. Integrated all API's with swagger
+  
+### Whats new in mViewer-0.9.2 ?
+   1. Enhanced Query Executor with support for executing queries on databases & collections including Map Reduce & aggregation queries.
+   2. Enhanced command spotlight with better keyboard navigation even to menu items
+   3. Support for managing Database users
+   4. Supoort for managing Collection indexes
+   5. Enhanced authentication & security with support for --auth mode
+   6. Better Look-n-Feel
+   
+### Working with mViewer-0.9.2 beta:
+   You can checkout the code or download the zip and make a release build using maven as described below.
+Extract the generated mViewer-0.9.2-release.zip & mViewer-0.9.2-release.tar.gz and run start_mViewer.bat/start_mViewer.sh.
+ 
+### Raising feature requests and issues:
+   You can raise feature requests and bugs found @ https://github.com/Imaginea/mViewer/issues
+##### We are always eagerly waiting for your feature requests and bug reports
+
+## mViewer-v0.9.1 - Stable Release (as on 25-08-2012)
+
+### mViewer-v0.9.1 supports :-
 
    1. Managing Databases - Create/Drop databases
    2. Managing Collections - Create/Update/Drop collections
    3. Managing GridFS files - Add/View/Download/Drop files
-   4. Querying using Query executor
-   5. Quick Navigation to all actions items, just needing to type few visible letters of the name using CTRL + Space.
+   4. Querying for documents using Query executor
+   5. Quick Navigation & Execution of all actions items using CTRL + Space.
    6. Pagination and Navigation to any subset of documents.
    7. Viewing stats of databases, collections and gridFS
    8. Opening multiple connections from same browser to different MongoDB servers
 
-### Download mViewer-v0.9.1
+### Download mViewer-1.0.0 beta
 
-Windows :- https://github.com/downloads/Imaginea/mViewer/mViewer-v0.9.1.zip
+Windows :- https://github.com/Imaginea/mViewer/releases/download/1.0.0/mViewer-1.0-release.zip
 
-Mac/Linux :- https://github.com/downloads/Imaginea/mViewer/mViewer-v0.9.1.tar.gz
+Mac/Linux :- https://github.com/Imaginea/mViewer/releases/download/1.0.0/mViewer-1.0-release.tar.gz
 
 Download previous versions from https://github.com/Imaginea/mViewer/downloads
     
@@ -35,7 +68,7 @@ Unzip/Untar the downloaded package and simply run start_mViewer.bat/start_mViewe
 
 'port' is optional, if not provided default port (8080) set in properties file will be used.
 
-Start using mViewer at http://localhost:<port>/index.html
+Start using mViewer at http://localhost:\<port\>/index.html
 
 
 ### Documentation
@@ -45,75 +78,59 @@ Detailed documentation on mViewer features & usage can be found at http://imagin
 
 ## Developer Notes
 
-### How to Build using maven ?
+### Contribute to Imaginea / mViewer !
+    1) Fork Imaginea / mViewer
+    2) Clone your forked mViewer repository locally
+    3) We use Intellij IDEA for development. So to setup with intellij 
+       a) Create mViewer as a maven project using "Import project from external module".
+       b) Apply Imaginea code styles/formatting settings to avoid un-wanted diffs with spaces in pull requests.
+         - Download https://github.com/downloads/Imaginea/mViewer/settings.jar and use import settings option to apply it.
+         - Make sure to format the code using ctr + alt + l before committing code.
+         - When committing code, if see a popup regarding different line separators used in project, 
+           then click 'Leave unchanged'.        
+       c) Configure a Tomcat Server locally in intellij to run/debug mViewer.
+    4) You can send a pull request to mViewer master branch with your features/enhancements/fixes.
+          
+### Making a Release build
 
->
-> $mvn clean package -DskipTests
->
+ Using maven:-
 
-   Q. Why do we skip tests ?.
+> $mvn -Prelease
 
-   A. Because we need to configure src/test/resources/mongo.config to point to running mongod service. To let the test run.
-   Once set, tests can run.
+ Building a release will generate mViewer-<version>-release.zip & mViewer-<version>-release.tar.gz files in the target folder
+ which has the mViewer.war bundled with winstone servlet container and start-up scripts from scripts folder. 
    
-##### Running standalone
-Run using maven. It will create a war and run it using the jetty server on a default port (Check the logs that print on your screen to spot it), you can access the service at http://localhost:8080/mViewer/
+### Running Standalone 
+ 
+ Using maven:-
+> $mvn -Pserver
 
->
-> $mvn -Pserver -DskipTests
->
+It will create mViewer.war and run it using the winstone server. 
+Once started, the application can be accessed at http://localhost:port. 
+Default port is 8080 which can be updated in mViewer.properties file.
 
+### Working on UI
 
-##### Deploying to Other Servlet-Containers.
+> Do $mvn -Pserver to run server standalone.
 
-For building a distributable unit run the target distributable war. This war can be deployed on to tomcat 7x, other server integration can be provided on demand.
+> Go to mviewer-ui and do npm install and npm start to run ui on web-pack dev server.
 
-Once the war is deployed go to the url http://<server-ip>:<http-port>/mViewer
+> Launch at http:localhost:3000
+ 
+### Running Unit Tests
 
->
-> $mvn clean package -DskipTests
->
+Use the following command to run the unit tests. surefire-reports will be generated in target folder.
+> $mvn install -DskipTests=false
 
-##### Building for release
+### Deploying to Other Servlet-Containers
 
-Building a release, bundles the war with winstone servlet container and scripts from scripts folder. The release zip and tgz mviewer-<version>.<type>
+You can generate a distributable war file using the following commands. The war can be deployed on to tomcat 7x. 
+Other server integration will be provided on demand. 
 
->
-> $mvn clean package -Prelease -DskipTests
->
-
-
-### How to Build using ant ?
-
-
-##### Running standalone
-Run build.xml using ant, target is start. It will create a war and run it using the winstone server, you can access the application at http://localhost:<port-no>. You can change the port no. in mViewer.properties file. Default port is 8080
-
->
-> $ant start
->
-
-
-##### Deploying to Other Servlet-Containers.
-
-For building a distributable unit run the target dist, since the default target is also set as dist, just running ant should suffice. dist would create a deployable war in the staging directory, which by default is at the same level as the src folder.
-This war can be deployed on to tomcat 7x, other server integration can be provided on demand.
+Using maven:-
+> $mvn clean package
 
 Once the war is deployed go to the url http://<server-ip>:<http-port>/mViewer
 
->
-> $ant dist
->
 
-##### Building for release
-
-Building a release, bundles the war with winstone servlet container and scripts from scripts folder. The release zip and tgz mviewer-<version>.<type>
-
->
-> $ant release
->
-
-
-##### Eagerly waiting for feature requests and bug reports
 ##### Team Imaginea
-

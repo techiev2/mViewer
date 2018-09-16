@@ -1,6 +1,11 @@
 .classpath
+.idea/
 .project
 .settings/
 mViewer.log
 target/
 *~
+*.iml
+mviewer-ui/node_modules
+mviewer-ui/build
+mviewer-ui/node
